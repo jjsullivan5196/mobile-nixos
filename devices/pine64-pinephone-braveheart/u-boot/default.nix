@@ -5,6 +5,7 @@
 , armTrustedFirmwareAllwinner
 , crustFirmware
 , fetchpatch
+, fetchFromGitHub
 , fetchFromGitLab
 }:
 
@@ -14,11 +15,21 @@ let
     name = "${id}.patch";
     url = "https://patchwork.ozlabs.org/patch/${id}/raw/";
   };
+  crustATF = armTrustedFirmwareAllwinner.overrideAttrs(old: rec {
+    name = "arm-trusted-firmware-${version}";
+    version = "fc9958d";
+    src = fetchFromGitHub {
+      owner = "crust-firmware";
+      repo = "arm-trusted-firmware";
+      rev = "fc9958d8e661ebb5842e68f238eaefb0fb0040c9";
+      sha256 = "0a2xigbpaanrpk4zlq96sdyf9hfhhpp0v7lm6wjdpfd75jrhfqss";
+    }; 
+  });
 in
 (buildUBoot {
   defconfig = "pinephone_defconfig";
   extraMeta.platforms = ["aarch64-linux"];
-  BL31 = "${armTrustedFirmwareAllwinner}/bl31.bin";
+  BL31 = "${crustATF}/bl31.bin";
   SCP = "${crustFirmware}/scp.bin";
 
   extraPatches = [
