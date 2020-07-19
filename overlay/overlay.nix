@@ -58,6 +58,14 @@ in
     make_ext4fs = callPackage ./make_ext4fs {};
     hardshutdown = callPackage ./hardshutdown {};
     bootlogd = callPackage ./bootlogd {};
+    #crustFirmware = callPackage ./crust-firmware {
+    #  or1k-gcc = (import <nixpkgs> { 
+    #    crossSystem = { 
+    #      config = "or1k-elf";
+    #    };
+    #  }).buildPackages.gcc;
+    #};
+    crustFirmware = callPackage ./crust-firmware-blob {};
 
     #
     # Hacks

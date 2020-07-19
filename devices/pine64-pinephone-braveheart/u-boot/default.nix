@@ -3,6 +3,7 @@
 , callPackage
 , buildUBoot
 , armTrustedFirmwareAllwinner
+, crustFirmware
 , fetchpatch
 , fetchFromGitLab
 }:
@@ -18,6 +19,7 @@ in
   defconfig = "pinephone_defconfig";
   extraMeta.platforms = ["aarch64-linux"];
   BL31 = "${armTrustedFirmwareAllwinner}/bl31.bin";
+  SCP = "${crustFirmware}/scp.bin";
 
   extraPatches = [
     (pw "1202024" "0c196zk1s3pq3wdv909sxmjgqpll2hwb817bpbghkfkyyknl96vg")
@@ -38,12 +40,12 @@ in
     CONFIG_BOOTDELAY=0
   '';
 }).overrideAttrs(old: rec {
-  version = "2020.04-rc3";
+  version = "f0b298c";
   src = fetchFromGitLab {
     owner = "pine64-org";
     repo = "u-boot";
-    sha256 = "10j3bl99fkvcgxaaikraljzs4bk0ikmswbsv4jai12xwnk9aidd7";
-    rev = "ec643935990b517e96ba9676eb0093b9bec96189";
+    sha256 = "0bywbkqr13ymc54a4p8n0h4ni8p1fv79z3xvg3s3xwlvrgv2q6ni";
+    rev = "f0b298c504daae9da171bac950c036432cc00201";
   };
   postInstall = ''
     cp .config $out/build.config
